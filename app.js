@@ -4,12 +4,14 @@ const path = require('path');
 const Nexmo = require('nexmo');
 const router = express.Router();
 var five = require("johnny-five");
-var ThingSpeak = require('thingspeakclient');
 
-//var controller = process.argv[2] || "GP2Y0A02YK0F";
+//Thingspeak Clent
+var ThingSpeak = require('thingspeakclient');
 var client = new ThingSpeak({updateTimeout:30000});
 var cm,inches,cm1,inches1;
 var count = 0;
+
+//Channel ID && Keys
 var channelID = 924739;
 var writeKey = 'AYG09JJYNW399CX9';
 const { Board, Proximity } = require("johnny-five");
@@ -17,12 +19,15 @@ const board = new Board();
 app.use(express.static(__dirname + "/public"));
 //const Nexmo = require('nexmo');
 
+//Nexmo API
 const nexmo = new Nexmo({
   apiKey: 'afe7ff44',
   apiSecret: '****************',
 });
+
 var lat=15.369328;
 var longi=75.121968;
+
 //Nexmo Message API
 const from = 'Nexmo';
 const to = '91**********';
@@ -45,7 +50,8 @@ client.attachChannel(channelID, {writeKey: writeKey}, function (err){
       controller: "HCSR04",
       pin: 7
     });
-  
+    
+  //Sensor Emit the Data Continuosly to measure the garbage level
     proximity.on("change", () => {
       const {centimeters, inches} = proximity;
       console.log("Proximity: ");
@@ -54,7 +60,7 @@ client.attachChannel(channelID, {writeKey: writeKey}, function (err){
       console.log("-----------------");
       if(centimeters<=5)
       {
-        if(count==0)
+        if(count==0)//To send the SMS only once otherwise the API will enter into loop and it will send more than 20 messages at a time(To avoid this keep count of messages)
         {
           client.updateChannel(channelID, {field1:centimeters ,field2:inches}, function(err, resp) {
             if (!err && resp > 0) {
