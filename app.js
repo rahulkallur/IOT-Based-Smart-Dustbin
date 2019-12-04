@@ -2,9 +2,6 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const Nexmo = require('nexmo');
-//const from = 'Nexmo';
-//const to = '917795955689';
-//const text = "Collect the garbage from this location"+15.369352+','+75.121570+"\t"+"";
 const router = express.Router();
 var five = require("johnny-five");
 var ThingSpeak = require('thingspeakclient');
@@ -22,14 +19,16 @@ app.use(express.static(__dirname + "/public"));
 
 const nexmo = new Nexmo({
   apiKey: 'afe7ff44',
-  apiSecret: 'aM1fvPLNA2uftxLi',
+  apiSecret: '****************',
 });
 var lat=15.369328;
 var longi=75.121968;
+//Nexmo Message API
 const from = 'Nexmo';
-const to = '919980630498';
+const to = '91**********';
 const text = 'Alert!!!!Collect garbage from the location '+lat+','+longi+"\t"+"";
 
+//Connecting To ThingSpeak Client
 client.attachChannel(channelID, {writeKey: writeKey}, function (err){
     if (!err) {
         console.log(`Successfully connected to ThingSpeak`);
@@ -38,6 +37,8 @@ client.attachChannel(channelID, {writeKey: writeKey}, function (err){
         console.log(`Cannot connect to ThingSpeak!!`);
     }
   });
+
+//Johnny-Five Ultrasonic Data Reading
 
   board.on("ready", () => {
     const proximity = new Proximity({
@@ -63,6 +64,7 @@ client.attachChannel(channelID, {writeKey: writeKey}, function (err){
                 console.log("Cannot update to ThingSpeak");
             }
         });
+        //Sending SMS To The Authority
         nexmo.message.sendSms(from, to, text);
         count++;
         }
