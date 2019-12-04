@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Smart Waste Management</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <script type="text/javascript" src="jquery-3.3.1.js"></script>
+    <script>
+    var arrLang = {
+        'en': {
+            'heading1': 'Smart Waste Management',
+            'heading2': 'Manual Pump Control',
+            'heading3': 'Live data update',
+        },
+        'kn': {
+            'heading1': 'ಸ್ಮಾರ್ಟ್ ತ್ಯಾಜ್ಯ ನಿರ್ವಹಣೆ',
+            'heading2': 'ಹಸ್ತಚಾಲಿತ ಪಂಪ್ ನಿಯಂತ್ರಣ',
+            'heading3': 'ಪ್ರಸ್ತುತ ನಡೆಯುತ್ತಿರುವ ಮಾಹಿತಿ',
+        }
+    };
+
+    $(function(){
+        $('.translate').click(function(){
+            var lang = $(this).attr('id');
+
+            $('.lang').each(function(index, element){
+                $(this).text(arrLang[lang][$(this).attr('key')]);
+            });
+        });
+    });
+    </script>
+    <style>
+    .langCont{
+        position: relative;
+        float: left;
+    }
+    #en:hover, #kn:hover{
+        cursor: pointer;
+    }
+    </style>
+</head>
+<body>
+    <div class="jumbotron text-center">
+        <h4 class="lang" key="heading1">Smart Waste Management</h4>
+    </div>
+    
+    
+    <div class="container text-center">
+        <div class="langCont">
+            Select language: 
+            <a class="translate text text-info" id="en">English</a>&nbsp;-&nbsp;
+            <a class="translate text text-info" id="kn">ಕನ್ನಡ</a>
+        </div>
+        <br>
+        
+        <br>
+        <div class="card bg-light text-dark">
+            <div class="card-header">
+                <h5 class="lang" key="heading3">Live data update</h5>
+            </div>
+            <div class="card-body">
+                <div id="soilInp"></div>
+                <div id="dayInp"></div>
+            </div>
+        </div>
+    <br>
+
+    <div class="row">
+        <div class="col">
+            <iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/924739/charts/1?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line&update=15"></iframe>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/924739/charts/2?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line&update=15"></iframe>
+        </div>
+    </div>
+
+
+        
+</div>
+<script src="soilData.js"></script>
+
+</body>
+
+</html>
